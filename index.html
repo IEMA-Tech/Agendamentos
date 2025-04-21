@@ -1,0 +1,71 @@
+<!DOCTYPE html> 
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Projetores</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="iema">
+            <img  src="assets/logo do iema.png" alt="logo iema">
+        </div>
+        <div class="tech">
+            <a href="https://graceful-salamander-753fdb.netlify.app/">
+                <img  src="assets/Monochrome Modern Technology Black Logo (1)-Photoroom (1).png" alt="">
+
+            </a>
+           
+        </div>
+       <div class="newton">
+            <img  src="assets/Imagem do WhatsApp de 2025-04-19 à(s) 14.50.22_5df81ed7 - Copia-Photoroom.png" alt="">
+       </div>
+    </header>
+    <div class="h1-texto">
+        <h1>Agendamentos</h1>
+    </div>
+   
+    <form id="agendamento-form">
+        <label for="professor">Nome do Professor:</label>
+        <input type="text" id="professor" required>
+
+        <label for="projetor">Equipamento:</label>
+        <select id="projetor" required>
+            <optgroup label="Projetores">
+                <option value="Projetor 1">Projetor 1</option>
+                <option value="Projetor 2">Projetor 2</option>
+                <option value="Projetor 3">Projetor 3</option>
+                <option value="Projetor 4">Projetor 4</option>
+                <option value="Projetor 5">Projetor 5</option>
+            </optgroup>
+
+            <optgroup label="Caixas de Som">
+                <option value="caixa G">Caixa de som G</option>
+                <option value="caixa P">Caixa de som P</option>
+            </optgroup>
+
+            <optgroup label="Espaços">
+                <option value="lab1">Lab Info 1</option>
+                <option value="lab2">Lab Info 2</option>
+                <option value="auditorio">Auditório</option>
+            </optgroup>
+        </select>
+
+        <label>Horários Disponíveis:</label>
+        <div id="horarios-container"></div>
+
+        <button type="submit">Agendar</button>
+    </form>
+
+    <a href="agendamentos.html">Ver Agendamentos</a>
+
+    <footer>
+        <h2>Iema-Tech</h2>
+        <p>Grupo de desenvolvedores do IEMA Pleno Newton Bello, criando soluções com tecnologia para transformar nosso dia a dia escolar.
+        © 2025 Iema Tech. Todos os direitos reservados.</p>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

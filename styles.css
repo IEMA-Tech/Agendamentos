@@ -1,0 +1,299 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    background-color: #f8f9fa;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: 20px; /* Adicionado para mais espaço na parte inferior */
+}
+
+
+
+.container {
+    width: 400px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* Adicionado para mais espaço abaixo */
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+input, select, button {
+    width: 90%;
+    max-width: 300px;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input {
+    font-size: 16px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s;
+    width: auto;
+    padding: 10px 20px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#horarios-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+#horarios-container label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+@media (max-width: 600px) {
+    #horarios-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .cabecalho{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        height: 70px;
+
+    }
+
+
+    
+    .h1-texto{
+        padding-top: 30px;
+    }
+    html, body {
+        overflow-x: hidden;
+    }
+}
+
+table {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+@media (max-width: 600px) {
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+
+
+}
+
+/* Remover o estilo padrão do iOS para select */
+select {
+    appearance: none;  /* Remove o estilo nativo */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Adicionar um ícone de seta para simular um select padrão */
+select::after {
+    content: "▼"; /* Ícone de seta */
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+}
+
+/* Resolver possíveis problemas de padding no iOS */
+select:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+#horarios-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+#horarios-container label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: #e9ecef;
+    padding: 8px 12px;
+    border-radius: 5px;
+    white-space: nowrap;
+    min-width: 50px; /* Define um tamanho mínimo para evitar que os horários fiquem desorganizados */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ajuste para centralizar checkbox dentro da label */
+#horarios-container label input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #000000;
+    border-radius: 3px;
+    background-color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+}
+
+/* Adiciona um check customizado */
+#horarios-container label input[type="checkbox"]:checked {
+    background-color: #007bff;
+    border: 1px solid #0056b3;
+    position: relative;
+}
+
+#horarios-container label input[type="checkbox"]:checked::after {
+    content: '✔';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    line-height: 14px;
+}
+
+
+.horario-disponivel {
+    background: #d4edda; /* Verde claro */
+    color: #000000; /* Verde escuro */
+    border: 2px solid #2aff5c;
+}
+
+.horario-indisponivel {
+    background: #f8d7da; /* Vermelho claro */
+    color: #000000; /* Vermelho escuro */
+    border: 2px solid #ff293e;
+}
+
+
+
+
+
+
+header{
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    background-color: #d4d3d3cd;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+
+   
+}
+.cabecalho{
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+
+}
+
+
+.tech img{
+    width: 100px;
+}
+.newton img{
+    width: 90px;
+    padding-top: 10px;
+}
+
+.iema img{
+    width: 150px;
+}
+
+.h1-texto{
+    padding-top: 150px;
+
+}
+
+footer{
+    text-align: center;
+    padding: 30px 30px 30px 30px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #111010;
+
+    p{
+        max-width: 800px;
+    }
+}
