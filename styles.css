@@ -287,13 +287,20 @@ header{
 
 }
 
-footer{
+footer {
+    margin-top: 150px;
+    color: #302e2e;
+    padding: 20px 10px;
     text-align: center;
-    padding: 30px 30px 30px 30px;
-    font-family: 'Times New Roman', Times, serif;
-    color: #111010;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
 
-    p{
+    p {
+        margin: 0;
+        padding: 0 10px;
         max-width: 800px;
-    }
+        margin-left: auto;
+        margin-right: auto;
+}
+
 }
