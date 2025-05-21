@@ -26,19 +26,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tabelaAgendamentos = document.getElementById("tabela-agendamentos");
 
  function obterProximoDiaUtil() {
-    let hoje = new Date();
+    const hoje = new Date();
     let diaAgendamento = new Date(hoje);
 
-    // Se for depois das 17h, agenda para o próximo dia
+    // Se já passou das 17h, o próximo agendamento é para o próximo dia
     if (hoje.getHours() >= 17) {
         diaAgendamento.setDate(diaAgendamento.getDate() + 1);
     }
 
-    // Pular para o próximo dia útil, se cair no fim de semana
-    while (diaAgendamento.getDay() === 0 || diaAgendamento.getDay() === 6) {
+    // Corrige caso o sistema esteja tentando avançar demais por falha anterior
+    // ou tentativa de agendar para datas indevidas: só permite o PRÓXIMO DIA ÚTIL
+
+    // Pula fins de semana
+    while (diaAgendamento.getDay() === 6 || diaAgendamento.getDay() === 0) {
         diaAgendamento.setDate(diaAgendamento.getDate() + 1);
     }
 
+    // Retorna a data formatada YYYY-MM-DD
     return diaAgendamento.toISOString().split('T')[0];
 }
 
@@ -62,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const horariosOcupados = agendamentos
             .filter(a => a.projetor === projetorSelecionado && a.data === dataFormatada)
             .map(a => a.horario);
-
+        
         horariosContainer.style.display = "flex";
         horariosContainer.style.flexWrap = "nowrap";
         horariosContainer.style.justifyContent = "center";
@@ -71,24 +75,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         horariosContainer.style.overflow = "hidden";
         horariosContainer.style.padding = "10px";
         horariosContainer.style.whiteSpace = "nowrap";
-
+        
         horarios.forEach(horario => {
             const label = document.createElement("label");
             label.style.display = "inline-flex";
             label.style.alignItems = "center";
             label.style.marginRight = "10px";
-
+            
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.value = horario;
             checkbox.name = "horario";
             if (horariosOcupados.includes(horario)) {
                 checkbox.disabled = true;
-                label.classList.add("horario-indisponivel");
-            } else {
-                label.classList.add("horario-disponivel");
-            }
 
+                label.classList.add("horario-indisponivel"); // Adiciona classe vermelha
+            } else {
+                label.classList.add("horario-disponivel"); // Adiciona classe verde
+
+            }
+            
             label.appendChild(checkbox);
             label.appendChild(document.createTextNode(horario));
             horariosContainer.appendChild(label);
@@ -97,12 +103,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function atualizarListaAgendamentos() {
         if (!tabelaAgendamentos) return;
-        tabelaAgendamentos.innerHTML = "<tr><th>Professor</th><th>Item Agendado</th><th>Horários</th></tr>";
-
+        tabelaAgendamentos.innerHTML = "<tr><th>Professor</th><th>Item Agendado</th><th>Horários</th></tr>";  // <th>Data</th> - Remove o nome DATA da tabela (Tela de agendamentos)
+        
         const agendamentos = await carregarAgendamentos();
-        const hoje = new Date().toISOString().split('T')[0];
-        const agendamentosAtivos = agendamentos.filter(a => a.data >= hoje);
-
+        const hoje = new Date().toISOString().split('T')[0]; // Obtém a data de hoje
+    
+        const agendamentosAtivos = agendamentos.filter(a => a.data >= hoje); // Filtra apenas os agendamentos futuros ou de hoje
+    
         const agendamentosAgrupados = {};
         agendamentosAtivos.forEach(a => {
             const chave = `${a.professor}-${a.projetor}-${a.data}`;
@@ -111,10 +118,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             agendamentosAgrupados[chave].horarios.push(a.horario);
         });
-
+    
         Object.values(agendamentosAgrupados).forEach(a => {
             const tr = document.createElement("tr");
-            tr.innerHTML = `<td>${a.professor}</td><td>${a.projetor}</td><td>${a.horarios.sort().join(", ")}</td>`;
+            tr.innerHTML = `<td>${a.professor}</td><td>${a.projetor}</td><td>${a.horarios.sort().join(", ")}</td>`;  // <td>${a.data}</td> - Remove a coluna por completo da tabela (Tela de agendamentos)
             tabelaAgendamentos.appendChild(tr);
         });
     }
@@ -122,19 +129,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function atualizarHistoricoAgendamentos() {
         const tabelaHistorico = document.getElementById("tabela-historico");
         if (!tabelaHistorico) return; 
-        tabelaHistorico.innerHTML = "<tr><th>Professor</th><th>Item Agendado</th><th>Horários</th><th>Data</th></tr>";
-
+        tabelaHistorico.innerHTML = "<tr><th>Professor</th><th>Item Agendado</th><th>Horários</th><th>Data</th></tr>";  //
+        
         const agendamentos = await carregarAgendamentos();
-
+        
         const hoje = new Date();
         const semanaPassada = new Date(hoje);
-        semanaPassada.setDate(hoje.getDate() - 7);
-
+        semanaPassada.setDate(hoje.getDate() - 7); // Pega registros dos últimos 7 dias
+        
         const agendamentosSemana = agendamentos.filter(a => {
             const dataAgendamento = new Date(a.data);
             return dataAgendamento >= semanaPassada && dataAgendamento <= hoje;
         });
-
+    
         const agendamentosAgrupados = {};
         agendamentosSemana.forEach(a => {
             const chave = `${a.professor}-${a.projetor}-${a.data}`;
@@ -143,14 +150,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             agendamentosAgrupados[chave].horarios.push(a.horario);
         });
-
+    
         Object.values(agendamentosAgrupados).forEach(a => {
             const tr = document.createElement("tr");
             tr.innerHTML = `<td>${a.professor}</td><td>${a.projetor}</td><td>${a.horarios.sort().join(", ")}</td><td>${a.data}</td>`;
             tabelaHistorico.appendChild(tr);
         });
     }
-
+    
+    // Chamar a função ao carregar a página de histórico
     document.addEventListener("DOMContentLoaded", atualizarHistoricoAgendamentos);
 
     if (form) {
@@ -163,15 +171,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const dataFormatada = obterProximoDiaUtil();
 
             if (!professor || !projetor || horariosSelecionados.length === 0) return;
-
-            const hoje = new Date();
-            const dataAgendamento = new Date(dataFormatada);
-            const dataLimite = obterProximoDiaUtil();
-
-            if (dataAgendamento.toISOString().split("T")[0] !== dataLimite) {
-                alert("Você só pode agendar para o próximo dia útil.");
-                return;
-            }
 
             for (let horario of horariosSelecionados) {
                 await addDoc(collection(db, "agendamentos"), { professor, projetor, horario, data: dataFormatada });
@@ -186,22 +185,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     atualizarListaAgendamentos();
 
+
    async function limparAgendamentosDiarios() {
     const agora = new Date();
+    const horaAtual = agora.getHours();
     const dataAtual = agora.toISOString().split('T')[0];
     const ultimaLimpeza = localStorage.getItem("ultimaLimpeza");
 
-    if (agora.getHours() >= 17 && ultimaLimpeza !== dataAtual) {
+    // Limpa se for depois das 17h e ainda não limpou hoje
+    if (horaAtual >= 17 && ultimaLimpeza !== dataAtual) {
         const querySnapshot = await getDocs(collection(db, "agendamentos"));
-        for (const docSnap of querySnapshot.docs) {
+        querySnapshot.forEach(async (docSnap) => {
             await deleteDoc(doc(db, "agendamentos", docSnap.id));
-        }
-        await atualizarListaAgendamentos();
+        });
+
+        atualizarListaAgendamentos();
         localStorage.setItem("ultimaLimpeza", dataAtual);
-        console.log("Limpeza de agendamentos realizada em", dataAtual);
     }
 }
 
+    // Chama a função imediatamente para garantir que a limpeza seja feita quando necessário
     limparAgendamentosDiarios();
+
+    // Verifica a cada 1 minuto
     setInterval(limparAgendamentosDiarios, 60000);
+
+
+
 });
+
