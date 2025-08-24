@@ -29,21 +29,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     const hoje = new Date();
     let diaAgendamento = new Date(hoje);
 
-    // Se já passou das 17h, o próximo agendamento é para o próximo dia
+    // Se já passou das 17h, agenda para o próximo dia
     if (hoje.getHours() >= 17) {
         diaAgendamento.setDate(diaAgendamento.getDate() + 1);
     }
 
-    // Corrige caso o sistema esteja tentando avançar demais por falha anterior
-    // ou tentativa de agendar para datas indevidas: só permite o PRÓXIMO DIA ÚTIL
-
-    // Pula fins de semana
+    // Pula sábados (6) e domingos (0)
     while (diaAgendamento.getDay() === 6 || diaAgendamento.getDay() === 0) {
         diaAgendamento.setDate(diaAgendamento.getDate() + 1);
     }
 
-    // Retorna a data formatada YYYY-MM-DD
-    return diaAgendamento.toISOString().split('T')[0];
+    // Formatar data no padrão YYYY-MM-DD sem UTC
+    const ano = diaAgendamento.getFullYear();
+    const mes = String(diaAgendamento.getMonth() + 1).padStart(2, "0");
+    const dia = String(diaAgendamento.getDate()).padStart(2, "0");
+
+    return `${ano}-${mes}-${dia}`;
 }
 
     async function carregarAgendamentos() {
@@ -215,4 +216,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 });
+
 
